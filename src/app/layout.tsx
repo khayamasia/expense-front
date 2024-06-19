@@ -15,8 +15,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={inter.className}>{children}</body>
+    <html className=" font-IranYekanNumber" dir="rtl" lang="en">
+      <body>{children}</body>
     </html>
   );
 }
