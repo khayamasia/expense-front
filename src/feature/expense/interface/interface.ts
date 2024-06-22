@@ -1,3 +1,39 @@
+import {
+  FieldErrors,
+  UseFormGetValues,
+  UseFormHandleSubmit,
+  UseFormSetValue,
+} from "react-hook-form";
+
+// export interface IExpense {
+//   id: number;
+//   name: string;
+//   price: number;
+//   comment: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   publishedAt: string;
+//   date: string;
+//   category: Category;
+//   sub_category: SubCategory;
+// }
+
+// export interface Category {
+//   id: number;
+//   name: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   publishedAt: string;
+// }
+
+// export interface SubCategory {
+//   id: number;
+//   name: string;
+//   createdAt: string;
+//   updatedAt: string;
+//   publishedAt: string;
+// }
+
 export interface IExpense {
   id: number;
   attributes: Attributes;
@@ -70,12 +106,16 @@ export interface Attributes4 {
 export interface IUpsertExpense {
   isOpenUpsert: boolean;
   onOpenChangeUpsert: (isOpen: boolean) => void;
+  errors: FieldErrors<IExpenseData>;
+  setValue: UseFormSetValue<IExpenseData>;
+  getValues: UseFormGetValues<IExpenseData>;
+  onSubmitForm: (e: React.FormEvent<HTMLFormElement>) => void;
+  handleSubmit: UseFormHandleSubmit<IExpenseData, undefined>;
 }
-
 export interface IExpenseData {
   price: string;
   category: string;
-  sub_categories: string[];
+  sub_category: string;
   name: string;
   comment: string;
   date: string;

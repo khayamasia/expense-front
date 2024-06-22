@@ -24,8 +24,17 @@ import PlusIcon from "@/app/assets/icons/PlusIcon";
 import UpsertExpense from "./UpsertExpense";
 
 const TableExpense = () => {
-  const { expenseList, isOpenUpsert, onOpenChangeUpsert, onOpenUpsert } =
-    useExpense();
+  const {
+    expenseList,
+    isOpenUpsert,
+    onOpenChangeUpsert,
+    onOpenUpsert,
+    errors,
+    getValues,
+    setValue,
+    handleSubmit,
+    onSubmitForm,
+  } = useExpense();
   console.log("expenseList", expenseList);
   return (
     <div className="relative flex flex-col mb-16">
@@ -68,9 +77,9 @@ const TableExpense = () => {
                 return (
                   <TableRow className="text-right bordertabel" key={item.id}>
                     <TableCell className="text-right">
-                      {NumberSeparator(item.attributes.price)}
+                      {NumberSeparator(item?.attributes?.price)}
                     </TableCell>
-                    <TableCell>{`${item.attributes.category.data.attributes.name}`}</TableCell>
+                    <TableCell>{`${item?.attributes?.category?.data?.attributes?.name}`}</TableCell>
                     <TableCell>
                       <Dropdown
                         placement="bottom-start"
@@ -139,8 +148,13 @@ const TableExpense = () => {
         </Button>
       </div>
       <UpsertExpense
+        getValues={getValues}
+        setValue={setValue}
+        errors={errors}
         isOpenUpsert={isOpenUpsert}
         onOpenChangeUpsert={onOpenChangeUpsert}
+        handleSubmit={handleSubmit}
+        onSubmitForm={onSubmitForm}
       />
     </div>
   );
