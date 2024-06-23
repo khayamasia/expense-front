@@ -8,6 +8,7 @@ import {
   DropdownItem,
   DropdownMenu,
   DropdownTrigger,
+  Pagination,
   Spinner,
   Table,
   TableBody,
@@ -75,11 +76,11 @@ const TableExpense = () => {
             {expenseList &&
               expenseList.map((item: IExpense, index) => {
                 return (
-                  <TableRow className="text-right bordertabel" key={item.id}>
+                  <TableRow className="text-right bordertabel" key={item?.id}>
                     <TableCell className="text-right">
-                      {NumberSeparator(item?.attributes?.price)}
+                      {NumberSeparator(item?.price)}
                     </TableCell>
-                    <TableCell>{`${item?.attributes?.category?.data?.attributes?.name}`}</TableCell>
+                    <TableCell>{`${item?.category?.name}`}</TableCell>
                     <TableCell>
                       <Dropdown
                         placement="bottom-start"
@@ -135,6 +136,23 @@ const TableExpense = () => {
               })}
           </TableBody>
         </Table>
+      </div>
+      <div className="mt-10 w-full flex justify-start xl:justify-start ">
+        {getValues("pageCount") > 1 ? (
+          <Pagination
+            isCompact
+            showControls
+            classNames={{ next: "rotate-180", prev: "rotate-180" }}
+            total={getValues("pageCount")}
+            page={getValues("page")}
+            onChange={(e) => {
+              setValue("page", e, { shouldValidate: true });
+              // setPage(e);
+            }}
+          />
+        ) : (
+          ""
+        )}
       </div>
       <div className="fixed right-4 bottom-8">
         <Button

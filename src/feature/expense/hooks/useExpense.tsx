@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { IExpense, IExpenseData } from "../interface/interface";
-import { getExpense } from "../helper/controller";
+import { ICategory, IExpense, IExpenseData } from "../interface/interface";
+import { getCategory, getExpense } from "../helper/controller";
 import { useDisclosure } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -8,15 +8,13 @@ import { SUpsertExpense } from "../interface/schema";
 import { APostExpense } from "../helper/api";
 export const useExpense = () => {
   const [expenseList, setExpenseList] = useState<IExpense[]>([]);
+  const [category, setCategory] = useState<ICategory[]>([]);
   const {
     isOpen: isOpenUpsert,
     onOpen: onOpenUpsert,
     onOpenChange: onOpenChangeUpsert,
   } = useDisclosure();
 
-  useEffect(() => {
-    getExpense(setExpenseList, 1);
-  }, []);
   const getCurrentDate = () => {
     return new Date().toISOString().slice(0, 10);
   };
@@ -39,8 +37,25 @@ export const useExpense = () => {
       date: getCurrentDate(),
       price: "",
       sub_category: "",
+      page: 1,
+      pageSize: 10,
+      pageCount: 0,
+      total: 0,
     },
   });
+
+  useEffect(() => {
+    getCategory(setCategory);
+  }, []);
+
+  useEffect(() => {
+    getExpense(
+      setExpenseList,
+      getValues("page"),
+      getValues("pageSize"),
+      setValue
+    );
+  }, [getValues("page")]);
 
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     // setIsDone(true)

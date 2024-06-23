@@ -3,7 +3,7 @@ export type TResponse<T> = Response<T>;
 export type OptionsType = Options;
 
 const access =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzE5MDYwMjE3LCJleHAiOjE3MjE2NTIyMTd9.0synMKXVYY7Xsw3O_0EVzz5akPCZP4z8kwXvf6la1DM";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE5MTM2MTY0LCJleHAiOjE3MjE3MjgxNjR9.5mAiJmQI-zbQ3OkRS69pTMwDkMCC1tTCQgsJtOdJXyk";
 // "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzE4NzE1Mjg0LCJleHAiOjE3MjEzMDcyODR9.jtRCQoBASQGo3QMNHI2PCwACh5CkgXaacJE0ZKLKSJo";
 // const access = typeof window !== "undefined" ? window.localStorage.getItem("access") : "";
 const defaultOpTion = {
