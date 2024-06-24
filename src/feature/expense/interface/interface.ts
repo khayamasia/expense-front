@@ -51,11 +51,20 @@ export interface ICategory {
   name: string;
 }
 
-//////////////--CATEGORY--///////////////
-// export interface IExpense {
-//   id: number;
-//   attributes: Attributes;
-// }
+//////////////--SUB CATEGORY--///////////////
+export interface ISubCategory {
+  id: number;
+  name: string;
+  category: Category;
+}
+
+export interface Category {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  publishedAt: string;
+}
 
 // export interface Attributes {
 //   name: string;
@@ -129,8 +138,11 @@ export interface IUpsertExpense {
   getValues: UseFormGetValues<IExpenseData>;
   onSubmitForm: (e: React.FormEvent<HTMLFormElement>) => void;
   handleSubmit: UseFormHandleSubmit<IExpenseData, undefined>;
+  category: ICategory[];
+  subCategory: ISubCategory[];
 }
 export interface IExpenseData {
+  id: string;
   price: string;
   category: string;
   sub_category: string;

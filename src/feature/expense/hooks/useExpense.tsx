@@ -1,23 +1,33 @@
 import { useEffect, useState } from "react";
-import { ICategory, IExpense, IExpenseData } from "../interface/interface";
-import { getCategory, getExpense } from "../helper/controller";
+import {
+  ICategory,
+  IExpense,
+  IExpenseData,
+  ISubCategory,
+} from "../interface/interface";
+import {
+  getCategory,
+  getCurrentDate,
+  getExpense,
+  getSubCategory,
+} from "../helper/controller";
 import { useDisclosure } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SUpsertExpense } from "../interface/schema";
-import { APostExpense } from "../helper/api";
+import { APostExpense, APutExpense } from "../helper/api";
+
 export const useExpense = () => {
   const [expenseList, setExpenseList] = useState<IExpense[]>([]);
   const [category, setCategory] = useState<ICategory[]>([]);
+  const [subCategory, setSubCategory] = useState<ISubCategory[]>([]);
   const {
     isOpen: isOpenUpsert,
     onOpen: onOpenUpsert,
     onOpenChange: onOpenChangeUpsert,
+    onClose,
   } = useDisclosure();
 
-  const getCurrentDate = () => {
-    return new Date().toISOString().slice(0, 10);
-  };
   const {
     register,
     handleSubmit,
@@ -41,12 +51,19 @@ export const useExpense = () => {
       pageSize: 10,
       pageCount: 0,
       total: 0,
+      id: "",
     },
   });
 
   useEffect(() => {
     getCategory(setCategory);
   }, []);
+
+  useEffect(() => {
+    if (getValues("category") != "") {
+      getSubCategory(setSubCategory, getValues("category"));
+    }
+  }, [getValues("category")]);
 
   useEffect(() => {
     getExpense(
@@ -58,20 +75,7 @@ export const useExpense = () => {
   }, [getValues("page")]);
 
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
-    // setIsDone(true)
     e.preventDefault();
-    console.log("first");
-
-    // {
-    //   "data":{
-    //   "name": "bayamos",
-    //   "price": 270000,
-    //   "comment": "test",
-    //   "category":1,
-    //   "sub_categories":2,
-    //   "users_permissions_user":1
-    //   }
-    // }
     const expenseForm = new FormData();
     try {
       expenseForm.append("name", getValues("name"));
@@ -86,34 +90,31 @@ export const useExpense = () => {
       let body = {
         data,
       };
+
       APostExpense(body)
         .then((res) => {
-          console.log("res:", res);
+          getExpense(setExpenseList, 1, getValues("pageSize"), setValue);
+          setValue("id", "", { shouldValidate: true });
+          setValue("name", "", { shouldValidate: true });
+          setValue("comment", "", { shouldValidate: true });
+          setValue("price", "", { shouldValidate: true });
+          setValue("sub_category", "", { shouldValidate: true });
+          onClose();
         })
         .catch((err) => {
           console.log("err:", err);
         });
-      // if (bannerId === "new") {
-      //   APostBanner(expenseForm)
-      //     .then((res) => {
-      //       router.push(`/panel/marketplace/settings/banner/list`);
-      //       Notify.success(res.data.message);
-      //     })
-      //     .catch((err) => {
-      //       Notify.error(err.data.message);
-      //       setIsDone(false);
-      //     });
-      // } else {
-      //   AEditBanner(expenseForm, bannerId)
-      //     .then((res) => {
-      //       Notify.success(res.data.message);
-      //       router.push(`/panel/marketplace/settings/banner/list`);
-      //     })
-      //     .catch((err) => {
-      //       Notify.error(err.data.message);
-      //       setIsDone(false);
-      //     });
-      // }
+      if (getValues("id")) {
+        let data: any = getValues();
+        let putBody = {
+          data,
+        };
+        APutExpense(putBody, getValues("id"))
+          .then((res) => {
+            onClose();
+          })
+          .catch((err) => {});
+      }
     } catch (err) {
       console.log(err);
     }
@@ -133,5 +134,7 @@ export const useExpense = () => {
     reset,
     control,
     onSubmitForm,
+    category,
+    subCategory,
   };
 };

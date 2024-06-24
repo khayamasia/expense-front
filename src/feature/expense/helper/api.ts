@@ -15,8 +15,24 @@ export const APostExpense = async (body: any): Promise<TResponse<any>> => {
     body
   );
 };
+export const APutExpense = async (
+  body: any,
+  id: string
+): Promise<TResponse<any>> => {
+  return FetchApi.put(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/expenses/${id}`,
+    body
+  );
+};
 export const AGetCategories = async (): Promise<TResponse<any>> => {
   return FetchApi.get(
     `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/category/getAll/`
+  );
+};
+export const AGetSubCategories = async (
+  categoryId: string
+): Promise<TResponse<any>> => {
+  return FetchApi.get(
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sub-category/getAll/${categoryId}`
   );
 };

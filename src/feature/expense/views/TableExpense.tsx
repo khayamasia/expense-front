@@ -23,6 +23,7 @@ import { IExpense } from "../interface/interface";
 import NumberSeparator from "@/utils/NumberSeprator";
 import PlusIcon from "@/app/assets/icons/PlusIcon";
 import UpsertExpense from "./UpsertExpense";
+import { getCurrentDate } from "../helper/controller";
 
 const TableExpense = () => {
   const {
@@ -35,8 +36,9 @@ const TableExpense = () => {
     setValue,
     handleSubmit,
     onSubmitForm,
+    category,
+    subCategory,
   } = useExpense();
-  console.log("expenseList", expenseList);
   return (
     <div className="relative flex flex-col mb-16">
       <div className="overflow-auto px-1 h-full">
@@ -106,8 +108,27 @@ const TableExpense = () => {
                           <DropdownItem
                             key="edit"
                             onClick={() => {
-                              console.log("edit");
-                              // onCatOpen();
+                              setValue("id", String(item?.id), {
+                                shouldValidate: true,
+                              });
+                              setValue("category", String(item?.category?.id), {
+                                shouldValidate: true,
+                              });
+                              setValue("price", String(item.price), {
+                                shouldValidate: true,
+                              });
+                              setValue(
+                                "sub_category",
+                                String(item?.sub_category?.id),
+                                { shouldValidate: true }
+                              );
+                              setValue("name", item?.name, {
+                                shouldValidate: true,
+                              });
+                              setValue("comment", item?.comment, {
+                                shouldValidate: true,
+                              });
+                              onOpenUpsert();
                             }}
                           >
                             <div className="flex items-center">
@@ -137,7 +158,7 @@ const TableExpense = () => {
           </TableBody>
         </Table>
       </div>
-      <div className="mt-10 w-full flex justify-start xl:justify-start ">
+      <div className="fixed bottom-48 right-2 w-full flex justify-start xl:justify-start">
         {getValues("pageCount") > 1 ? (
           <Pagination
             isCompact
@@ -147,16 +168,22 @@ const TableExpense = () => {
             page={getValues("page")}
             onChange={(e) => {
               setValue("page", e, { shouldValidate: true });
-              // setPage(e);
             }}
           />
         ) : (
           ""
         )}
       </div>
-      <div className="fixed right-4 bottom-8">
+      <div className="fixed right-2 bottom-8">
         <Button
           onClick={() => {
+            setValue("id", "", { shouldValidate: true });
+            setValue("price", "", { shouldValidate: true });
+            setValue("category", "", { shouldValidate: true });
+            setValue("sub_category", "", { shouldValidate: true });
+            setValue("name", "", { shouldValidate: true });
+            setValue("comment", "", { shouldValidate: true });
+            setValue("date", getCurrentDate(), { shouldValidate: true });
             onOpenUpsert();
           }}
           color="primary"
@@ -173,6 +200,8 @@ const TableExpense = () => {
         onOpenChangeUpsert={onOpenChangeUpsert}
         handleSubmit={handleSubmit}
         onSubmitForm={onSubmitForm}
+        category={category}
+        subCategory={subCategory}
       />
     </div>
   );

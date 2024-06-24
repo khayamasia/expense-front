@@ -19,6 +19,7 @@ import gregorian_en from "react-date-object/locales/gregorian_en";
 import persian_fa from "react-date-object/locales/persian_fa";
 import DateObject from "react-date-object";
 import NumberSeparator from "@/utils/NumberSeprator";
+import { convertNumberToWords } from "../helper/controller";
 
 const UpsertExpense = ({
   isOpenUpsert,
@@ -28,33 +29,9 @@ const UpsertExpense = ({
   setValue,
   onSubmitForm,
   handleSubmit,
+  category,
+  subCategory,
 }: IUpsertExpense) => {
-  const animals = [
-    {
-      id: "1",
-      label: "Cat",
-      value: "cat",
-      description: "The second most popular pet in the world",
-    },
-    {
-      id: "2",
-      label: "Dog",
-      value: "dog",
-      description: "The most popular pet in the world",
-    },
-    {
-      id: "3",
-      label: "Elephant",
-      value: "elephant",
-      description: "The largest land animal",
-    },
-    {
-      label: "Lion",
-      value: "lion",
-      description: "The king of the jungle",
-      id: "4",
-    },
-  ];
   console.log(getValues());
   return (
     <Modal
@@ -74,11 +51,16 @@ const UpsertExpense = ({
               }}
             >
               <ModalHeader className="flex flex-col gap-1">
-                Add expense
+                {getValues("id") != "" ? "ویرایش هزینه" : "افزودن هزینه"}
               </ModalHeader>
               <ModalBody>
                 <div className="flex flex-wrap mb-4 gap-y-3">
                   <div className="w-full xl:w-4/12 xl:pl-4">
+                    <div className="text-xs text-gray-500">
+                      {Number(getValues("price")) > 0
+                        ? convertNumberToWords(Number(getValues("price")))
+                        : ""}
+                    </div>
                     <Input
                       variant="bordered"
                       type="text"
@@ -107,7 +89,7 @@ const UpsertExpense = ({
                     <Autocomplete
                       label="دسته بندی"
                       variant="bordered"
-                      defaultItems={animals}
+                      defaultItems={category}
                       placeholder=""
                       className="max-w-xs "
                       selectedKey={getValues("category")}
@@ -122,7 +104,7 @@ const UpsertExpense = ({
                     >
                       {(item) => (
                         <AutocompleteItem key={item.id}>
-                          {item.label}
+                          {item.name}
                         </AutocompleteItem>
                       )}
                     </Autocomplete>
@@ -140,7 +122,7 @@ const UpsertExpense = ({
                     <Autocomplete
                       label="زیر دسته بندی"
                       variant="bordered"
-                      defaultItems={animals}
+                      defaultItems={subCategory}
                       placeholder=""
                       className="max-w-xs"
                       selectedKey={getValues("sub_category")}
@@ -152,7 +134,7 @@ const UpsertExpense = ({
                     >
                       {(item) => (
                         <AutocompleteItem key={item.id}>
-                          {item.label}
+                          {item.name}
                         </AutocompleteItem>
                       )}
                     </Autocomplete>
@@ -193,7 +175,6 @@ const UpsertExpense = ({
                       placeholder=""
                       value={getValues("comment")}
                       onChange={(e: any) => {
-                        console.log(e);
                         setValue("comment", e.target.value, {
                           shouldValidate: true,
                         });
@@ -224,10 +205,10 @@ const UpsertExpense = ({
               </ModalBody>
               <ModalFooter>
                 <Button color="danger" variant="light" onPress={onClose}>
-                  Close
+                  بستن
                 </Button>
                 <Button type="submit" color="primary">
-                  Action
+                  {getValues("id") === "" ? "افزودن" : "ویرایش"}
                 </Button>
               </ModalFooter>
             </form>
