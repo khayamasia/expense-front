@@ -6,3 +6,17 @@ export const SUpsertExpense = z.object({
     .string({ invalid_type_error: "دسته بندی الزامی می‌‌باشده" })
     .min(1, "دسته بندی الزامی می‌‌باشد"),
 });
+
+export const SUpsertCategory = z.object({
+  name: z
+    .string({ invalid_type_error: "دسته بندی الزامی می‌‌باشده" })
+    .min(1, "دسته بندی الزامی می‌‌باشد"),
+});
+export const SUpsertSubCategory = z.object({
+  category: z
+    .string({ invalid_type_error: "دسته بندی الزامی می‌‌باشد" })
+    .min(1, "دسته بندی الزامی می‌‌باشد"),
+  name: z
+    .string({ invalid_type_error: "زیر دسته بندی الزامی می‌‌باشد" })
+    .min(1, "زیر دسته بندی الزامی می‌‌باشد"),
+});

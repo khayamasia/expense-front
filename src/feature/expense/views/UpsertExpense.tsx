@@ -11,7 +11,6 @@ import {
   Textarea,
 } from "@nextui-org/react";
 import React from "react";
-import { IUpsertExpense } from "../interface/interface";
 import { DatePickerIcon } from "@/components/DatePickerIcon";
 import gregorian from "react-date-object/calendars/gregorian";
 import persian from "react-date-object/calendars/persian";
@@ -20,6 +19,12 @@ import persian_fa from "react-date-object/locales/persian_fa";
 import DateObject from "react-date-object";
 import NumberSeparator from "@/utils/NumberSeprator";
 import { convertNumberToWords } from "../helper/controller";
+import { IUpsertExpense } from "../interface/interface";
+import PlusIcon from "@/app/assets/icons/PlusIcon";
+import UpsertCategory from "./UpsertCategory";
+import { useCategory } from "../hooks/useCategory";
+import { useSubCategory } from "../hooks/useSubCategory";
+import UpsertSubCategory from "./UpsertSubCategory";
 
 const UpsertExpense = ({
   isOpenUpsert,
@@ -31,8 +36,35 @@ const UpsertExpense = ({
   handleSubmit,
   category,
   subCategory,
+  setCategory,
+  setSubCategory,
 }: IUpsertExpense) => {
-  console.log(getValues());
+  const {
+    control,
+    errors: errorsCat,
+    getValues: getValuesCat,
+    handleSubmit: handleSubmitCat,
+    isOpenUpsertCat,
+    isSubmitting,
+    onOpenChangeUpsertCat,
+    onOpenUpsertCat,
+    onSubmitForm: onSubmitFormCat,
+    register,
+    reset,
+    setValue: setValueCat,
+  } = useCategory(setCategory);
+
+  const {
+    errors: errorsSubCat,
+    getValues: getValuesSubCat,
+    handleSubmit: handleSubmitSubCat,
+    isOpenUpsertSubCat,
+    onOpenChangeUpsertSubCat,
+    onOpenUpsertSubCat,
+    onSubmitForm: onSubmitFormSubCat,
+    setValue: setValueSubCat,
+  } = useSubCategory(setSubCategory);
+
   return (
     <Modal
       isOpen={isOpenUpsert}
@@ -55,7 +87,7 @@ const UpsertExpense = ({
               </ModalHeader>
               <ModalBody>
                 <div className="flex flex-wrap mb-4 gap-y-3">
-                  <div className="w-full xl:w-4/12 xl:pl-4">
+                  <div className="w-full ">
                     <div className="text-xs text-gray-500">
                       {Number(getValues("price")) > 0
                         ? convertNumberToWords(Number(getValues("price")))
@@ -85,29 +117,37 @@ const UpsertExpense = ({
                       <p className="text-red-500 pt-2 text-sm">{`${errors.name.message}`}</p>
                     )} */}
                   </div>
-                  <div className="w-full xl:w-4/12 xl:pl-4 pt-1">
-                    <Autocomplete
-                      label="دسته بندی"
-                      variant="bordered"
-                      defaultItems={category}
-                      placeholder=""
-                      className="max-w-xs "
-                      selectedKey={getValues("category")}
-                      onSelectionChange={(e: any) => {
-                        console.log(e);
-
-                        setValue("category", e, {
-                          shouldValidate: true,
-                        });
-                      }}
-                      // onSelectionChange={setValue}
-                    >
-                      {(item) => (
-                        <AutocompleteItem key={item.id}>
-                          {item.name}
-                        </AutocompleteItem>
-                      )}
-                    </Autocomplete>
+                  <div className="w-full pt-1">
+                    <div className="flex gap-2 items-center">
+                      <Autocomplete
+                        label="دسته بندی"
+                        variant="bordered"
+                        defaultItems={category}
+                        placeholder=""
+                        className="max-w-xs "
+                        selectedKey={getValues("category")}
+                        onSelectionChange={(e: any) => {
+                          setValue("category", e, {
+                            shouldValidate: true,
+                          });
+                        }}
+                      >
+                        {(item) => (
+                          <AutocompleteItem key={item.id}>
+                            {item.name}
+                          </AutocompleteItem>
+                        )}
+                      </Autocomplete>
+                      <Button
+                        isIconOnly
+                        color="default"
+                        onClick={() => {
+                          onOpenUpsertCat();
+                        }}
+                      >
+                        <PlusIcon className="w-5 h-5" />
+                      </Button>
+                    </div>
                     {/* <Autocomplete
                       options={options}
                       onChange={(e) => {
@@ -118,31 +158,42 @@ const UpsertExpense = ({
                       <p className="text-red-500 pt-2 text-sm">{`${errors.name.message}`}</p>
                     )} */}
                   </div>
-                  <div className="w-full xl:w-4/12 xl:pl-4 pt-1">
-                    <Autocomplete
-                      label="زیر دسته بندی"
-                      variant="bordered"
-                      defaultItems={subCategory}
-                      placeholder=""
-                      className="max-w-xs"
-                      selectedKey={getValues("sub_category")}
-                      onSelectionChange={(e: any) => {
-                        setValue("sub_category", e, {
-                          shouldValidate: true,
-                        });
-                      }}
-                    >
-                      {(item) => (
-                        <AutocompleteItem key={item.id}>
-                          {item.name}
-                        </AutocompleteItem>
-                      )}
-                    </Autocomplete>
+                  <div className="w-full  pt-1">
+                    <div className="flex gap-2 items-center">
+                      <Autocomplete
+                        label="زیر دسته بندی"
+                        variant="bordered"
+                        defaultItems={subCategory}
+                        placeholder=""
+                        className="max-w-xs"
+                        selectedKey={getValues("sub_category")}
+                        onSelectionChange={(e: any) => {
+                          setValue("sub_category", e, {
+                            shouldValidate: true,
+                          });
+                        }}
+                      >
+                        {(item) => (
+                          <AutocompleteItem key={item.id}>
+                            {item.name}
+                          </AutocompleteItem>
+                        )}
+                      </Autocomplete>
+                      <Button
+                        isIconOnly
+                        color="default"
+                        onClick={() => {
+                          onOpenUpsertSubCat();
+                        }}
+                      >
+                        <PlusIcon className="w-5 h-5" />
+                      </Button>
+                    </div>
                     {/* {errors.name && (
                       <p className="text-red-500 pt-2 text-sm">{`${errors.name.message}`}</p>
                     )} */}
                   </div>
-                  <div className="w-full xl:w-4/12 xl:pl-4">
+                  <div className="w-full ">
                     <Input
                       variant="bordered"
                       type="text"
@@ -167,7 +218,7 @@ const UpsertExpense = ({
                       <p className="text-red-500 pt-2 text-sm">{`${errors.name.message}`}</p>
                     )} */}
                   </div>
-                  <div className="w-full xl:w-4/12 xl:pl-4">
+                  <div className="w-full ">
                     <Textarea
                       variant="bordered"
                       label="توضیحات"
@@ -184,7 +235,7 @@ const UpsertExpense = ({
                       <p className="text-red-500 pt-2 text-sm">{`${errors.name.message}`}</p>
                     )} */}
                   </div>
-                  <div className="w-full xl:w-4/12 xl:pl-4">
+                  <div className="w-full ">
                     <div className="w-full">
                       {/* <label className="text-asiatech-gray-700 ">تاریخ</label> */}
                       <DatePickerIcon
@@ -215,6 +266,28 @@ const UpsertExpense = ({
           </>
         )}
       </ModalContent>
+      <UpsertCategory
+        errors={errorsCat}
+        getValues={getValuesCat}
+        handleSubmit={handleSubmitCat}
+        isOpenUpsert={isOpenUpsertCat}
+        onOpenChangeUpsert={onOpenChangeUpsertCat}
+        onSubmitForm={onSubmitFormCat}
+        setCategory={setCategory}
+        setValue={setValueCat}
+      />
+      <UpsertSubCategory
+        category={category}
+        errors={errorsSubCat}
+        getValues={getValuesSubCat}
+        handleSubmit={handleSubmitSubCat}
+        isOpenUpsert={isOpenUpsertSubCat}
+        onOpenChangeUpsert={onOpenChangeUpsertSubCat}
+        onSubmitForm={onSubmitFormSubCat}
+        selectedCategory={getValues("category")}
+        setSubCategoty={setSubCategory}
+        setValue={setValueSubCat}
+      />
     </Modal>
   );
 };

@@ -135,6 +135,8 @@ export const useExpense = () => {
     control,
     onSubmitForm,
     category,
+    setCategory,
     subCategory,
+    setSubCategory,
   };
 };

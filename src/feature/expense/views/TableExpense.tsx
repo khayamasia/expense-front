@@ -24,6 +24,8 @@ import NumberSeparator from "@/utils/NumberSeprator";
 import PlusIcon from "@/app/assets/icons/PlusIcon";
 import UpsertExpense from "./UpsertExpense";
 import { getCurrentDate } from "../helper/controller";
+import UpsertCategory from "./UpsertCategory";
+import { useCategory } from "../hooks/useCategory";
 
 const TableExpense = () => {
   const {
@@ -38,7 +40,10 @@ const TableExpense = () => {
     onSubmitForm,
     category,
     subCategory,
+    setCategory,
+    setSubCategory,
   } = useExpense();
+
   return (
     <div className="relative flex flex-col mb-16">
       <div className="overflow-auto px-1 h-full">
@@ -201,7 +206,9 @@ const TableExpense = () => {
         handleSubmit={handleSubmit}
         onSubmitForm={onSubmitForm}
         category={category}
+        setCategory={setCategory}
         subCategory={subCategory}
+        setSubCategory={setSubCategory}
       />
     </div>
   );
