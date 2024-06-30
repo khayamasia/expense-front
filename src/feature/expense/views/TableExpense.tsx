@@ -39,9 +39,9 @@ const TableExpense = () => {
     handleSubmit,
     onSubmitForm,
     category,
-    subCategory,
     setCategory,
-    setSubCategory,
+    names,
+    setNames,
   } = useExpense();
 
   return (
@@ -122,11 +122,9 @@ const TableExpense = () => {
                               setValue("price", String(item.price), {
                                 shouldValidate: true,
                               });
-                              setValue(
-                                "sub_category",
-                                String(item?.sub_category?.id),
-                                { shouldValidate: true }
-                              );
+                              setValue("name", String(item?.sub_category?.id), {
+                                shouldValidate: true,
+                              });
                               setValue("name", item?.name, {
                                 shouldValidate: true,
                               });
@@ -185,7 +183,7 @@ const TableExpense = () => {
             setValue("id", "", { shouldValidate: true });
             setValue("price", "", { shouldValidate: true });
             setValue("category", "", { shouldValidate: true });
-            setValue("sub_category", "", { shouldValidate: true });
+            // setValue("sub_category", "", { shouldValidate: true });
             setValue("name", "", { shouldValidate: true });
             setValue("comment", "", { shouldValidate: true });
             setValue("date", getCurrentDate(), { shouldValidate: true });
@@ -207,8 +205,8 @@ const TableExpense = () => {
         onSubmitForm={onSubmitForm}
         category={category}
         setCategory={setCategory}
-        subCategory={subCategory}
-        setSubCategory={setSubCategory}
+        names={names}
+        setName={setNames}
       />
     </div>
   );

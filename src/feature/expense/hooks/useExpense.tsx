@@ -3,13 +3,13 @@ import {
   ICategory,
   IExpense,
   IExpenseData,
-  ISubCategory,
+  IName,
 } from "../interface/interface";
 import {
   getCategory,
   getCurrentDate,
   getExpense,
-  getSubCategory,
+  getName,
 } from "../helper/controller";
 import { useDisclosure } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
@@ -20,7 +20,7 @@ import { APostExpense, APutExpense } from "../helper/api";
 export const useExpense = () => {
   const [expenseList, setExpenseList] = useState<IExpense[]>([]);
   const [category, setCategory] = useState<ICategory[]>([]);
-  const [subCategory, setSubCategory] = useState<ISubCategory[]>([]);
+  const [names, setNames] = useState<IName[]>([]);
   const {
     isOpen: isOpenUpsert,
     onOpen: onOpenUpsert,
@@ -46,7 +46,6 @@ export const useExpense = () => {
       //inja baiad check konim edit e ya add
       date: getCurrentDate(),
       price: "",
-      sub_category: "",
       page: 1,
       pageSize: 10,
       pageCount: 0,
@@ -60,10 +59,8 @@ export const useExpense = () => {
   }, []);
 
   useEffect(() => {
-    if (getValues("category") != "") {
-      getSubCategory(setSubCategory, getValues("category"));
-    }
-  }, [getValues("category")]);
+    getName(setNames);
+  }, []);
 
   useEffect(() => {
     getExpense(
@@ -82,7 +79,6 @@ export const useExpense = () => {
       expenseForm.append("price", getValues("price"));
       expenseForm.append("comment", getValues("comment"));
       expenseForm.append("category", getValues("category"));
-      expenseForm.append("sub_category", String(getValues("sub_category")));
       expenseForm.append("users_permissions_user", "1");
 
       let data: any = getValues();
@@ -98,7 +94,6 @@ export const useExpense = () => {
           setValue("name", "", { shouldValidate: true });
           setValue("comment", "", { shouldValidate: true });
           setValue("price", "", { shouldValidate: true });
-          setValue("sub_category", "", { shouldValidate: true });
           onClose();
         })
         .catch((err) => {
@@ -136,7 +131,7 @@ export const useExpense = () => {
     onSubmitForm,
     category,
     setCategory,
-    subCategory,
-    setSubCategory,
+    names,
+    setNames,
   };
 };

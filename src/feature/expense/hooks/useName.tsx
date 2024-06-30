@@ -1,38 +1,26 @@
 import { useEffect, useState } from "react";
-import {
-  ICategory,
-  ICategoryData,
-  IExpense,
-  IExpenseData,
-  ISubCategory,
-  ISubCategoryData,
-} from "../interface/interface";
-import {
-  getCategory,
-  getCurrentDate,
-  getExpense,
-  getSubCategory,
-} from "../helper/controller";
+import { IExpenseData, IName, INameData } from "../interface/interface";
 import { useDisclosure } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
+import { UseFormSetValue, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  SUpsertCategory,
-  SUpsertExpense,
-  SUpsertSubCategory,
-} from "../interface/schema";
+import { SUpsertName } from "../interface/schema";
 import {
   APostCategory,
   APostExpense,
-  APostSubCategories,
+  APostNames,
   APutExpense,
 } from "../helper/api";
+import { getName } from "../helper/controller";
 
-export const useSubCategory = (setSubCategory: Function) => {
+export const useName = (
+  setName: Function,
+  names: IName[],
+  setExpense: UseFormSetValue<IExpenseData>
+) => {
   const {
-    isOpen: isOpenUpsertSubCat,
-    onOpen: onOpenUpsertSubCat,
-    onOpenChange: onOpenChangeUpsertSubCat,
+    isOpen: isOpenUpsertName,
+    onOpen: onOpenUpsertName,
+    onOpenChange: onOpenChangeUpsertName,
     onClose,
   } = useDisclosure();
 
@@ -44,21 +32,26 @@ export const useSubCategory = (setSubCategory: Function) => {
     control,
     setValue,
     getValues,
-  } = useForm<ISubCategoryData>({
-    resolver: zodResolver(SUpsertSubCategory),
+  } = useForm<INameData>({
+    resolver: zodResolver(SUpsertName),
     mode: "onSubmit",
     values: {
       name: "",
       id: "",
-      category: "",
     },
   });
 
   useEffect(() => {
-    if (getValues("category") != "") {
-      getSubCategory(setSubCategory, getValues("category"));
+    getName(setName);
+  }, [isOpenUpsertName]);
+
+  useEffect(() => {
+    if (names?.length > 0) {
+      setExpense("name", String(names[0]?.id), {
+        shouldValidate: true,
+      });
     }
-  }, [isOpenUpsertSubCat, getValues("category")]);
+  }, [names]);
 
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,11 +61,10 @@ export const useSubCategory = (setSubCategory: Function) => {
         data,
       };
 
-      APostSubCategories(body)
+      APostNames(body)
         .then((res) => {
           setValue("name", "", { shouldValidate: true });
-          setValue("category", "", { shouldValidate: true });
-          setValue("id", "", { shouldValidate: true });
+          // setValue("id", "", { shouldValidate: true });
           onClose();
         })
         .catch((err) => {
@@ -84,9 +76,9 @@ export const useSubCategory = (setSubCategory: Function) => {
   };
 
   return {
-    onOpenChangeUpsertSubCat,
-    onOpenUpsertSubCat,
-    isOpenUpsertSubCat,
+    onOpenChangeUpsertName,
+    onOpenUpsertName,
+    isOpenUpsertName,
     setValue,
     getValues,
     register,

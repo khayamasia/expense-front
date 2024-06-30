@@ -1,10 +1,5 @@
 import { UseFormSetValue } from "react-hook-form";
-import {
-  AGetCategories,
-  AGetExpense,
-  AGetSubCategories,
-  APutExpense,
-} from "./api";
+import { AGetCategories, AGetExpense, AGetNames, APutExpense } from "./api";
 import { IExpenseData } from "../interface/interface";
 import num2persian from "num2persian";
 
@@ -62,14 +57,10 @@ export const getCategory = (setCategory: Function) => {
       console.log("error:", err);
     });
 };
-export const getSubCategory = (
-  setSubCategory: Function,
-  categoryId: string
-) => {
-  AGetSubCategories(categoryId)
+export const getName = (setNames: Function) => {
+  AGetNames()
     .then((json: any) => {
-      setSubCategory(json.data.data);
-      console.log("json:", json);
+      setNames(json.data.data);
     })
     .catch((err) => {
       console.log("error:", err);

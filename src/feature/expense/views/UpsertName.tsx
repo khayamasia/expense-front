@@ -13,7 +13,7 @@ import React from "react";
 import { IUpsertCategory, IUpsertSubCategory } from "../interface/interface";
 import { useCategory } from "../hooks/useCategory";
 
-const UpsertSubCategory = ({
+const UpsertName = ({
   errors,
   getValues,
   handleSubmit,
@@ -21,9 +21,6 @@ const UpsertSubCategory = ({
   onOpenChangeUpsert,
   onSubmitForm,
   setValue,
-  setSubCategoty,
-  category,
-  selectedCategory,
 }: IUpsertSubCategory) => {
   console.log("errors:", errors);
   console.log("getValues:", getValues());
@@ -46,36 +43,16 @@ const UpsertSubCategory = ({
                 }}
               >
                 <ModalHeader className="flex flex-col gap-1">
-                  افزودن زیر دسته بندی
+                  افزودن نام
                 </ModalHeader>
                 <ModalBody>
                   <div className="flex flex-wrap mb-4 gap-y-3">
-                    <Autocomplete
-                      label="دسته بندی"
-                      variant="bordered"
-                      defaultItems={category}
-                      placeholder=""
-                      className="max-w-xs "
-                      defaultSelectedKey={selectedCategory}
-                      //   selectedKey={getValues("category")}
-                      onSelectionChange={(e: any) => {
-                        setValue("category", e, {
-                          shouldValidate: true,
-                        });
-                      }}
-                    >
-                      {(item) => (
-                        <AutocompleteItem key={item.id}>
-                          {item.name}
-                        </AutocompleteItem>
-                      )}
-                    </Autocomplete>
                     <div className="w-full ">
                       <Input
                         variant="bordered"
                         type="text"
                         placeholder=""
-                        label="نام زیر دسته بندی"
+                        label="نام"
                         className="w-full mt-2"
                         value={getValues("name")}
                         classNames={{
@@ -92,8 +69,8 @@ const UpsertSubCategory = ({
                         }}
                       />
                       {/* {errors.name && (
-                        <p className="text-red-500 pt-2 text-sm">{`${errors.name.message}`}</p>
-                      )} */}
+                      <p className="text-red-500 pt-2 text-sm">{`${errors.name.message}`}</p>
+                    )} */}
                     </div>
                   </div>
                 </ModalBody>
@@ -114,4 +91,4 @@ const UpsertSubCategory = ({
   );
 };
 
-export default UpsertSubCategory;
+export default UpsertName;

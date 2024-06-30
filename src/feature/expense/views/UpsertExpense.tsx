@@ -23,8 +23,9 @@ import { IUpsertExpense } from "../interface/interface";
 import PlusIcon from "@/app/assets/icons/PlusIcon";
 import UpsertCategory from "./UpsertCategory";
 import { useCategory } from "../hooks/useCategory";
-import { useSubCategory } from "../hooks/useSubCategory";
-import UpsertSubCategory from "./UpsertSubCategory";
+import UpsertSubCategory from "./UpsertName";
+import { useName } from "../hooks/useName";
+import UpsertName from "./UpsertName";
 
 const UpsertExpense = ({
   isOpenUpsert,
@@ -35,10 +36,11 @@ const UpsertExpense = ({
   onSubmitForm,
   handleSubmit,
   category,
-  subCategory,
   setCategory,
-  setSubCategory,
+  names,
+  setName,
 }: IUpsertExpense) => {
+  console.log(getValues());
   const {
     control,
     errors: errorsCat,
@@ -52,18 +54,18 @@ const UpsertExpense = ({
     register,
     reset,
     setValue: setValueCat,
-  } = useCategory(setCategory);
+  } = useCategory(setCategory, category, setValue);
 
   const {
-    errors: errorsSubCat,
-    getValues: getValuesSubCat,
-    handleSubmit: handleSubmitSubCat,
-    isOpenUpsertSubCat,
-    onOpenChangeUpsertSubCat,
-    onOpenUpsertSubCat,
-    onSubmitForm: onSubmitFormSubCat,
-    setValue: setValueSubCat,
-  } = useSubCategory(setSubCategory);
+    errors: errorsName,
+    getValues: getValuesName,
+    handleSubmit: handleSubmitName,
+    isOpenUpsertName,
+    onOpenChangeUpsertName,
+    onOpenUpsertName,
+    onSubmitForm: onSubmitFormName,
+    setValue: setValueName,
+  } = useName(setName, names, setValue);
 
   return (
     <Modal
@@ -161,14 +163,14 @@ const UpsertExpense = ({
                   <div className="w-full  pt-1">
                     <div className="flex gap-2 items-center">
                       <Autocomplete
-                        label="زیر دسته بندی"
+                        label="نام"
                         variant="bordered"
-                        defaultItems={subCategory}
+                        defaultItems={names}
                         placeholder=""
                         className="max-w-xs"
-                        selectedKey={getValues("sub_category")}
+                        selectedKey={getValues("name")}
                         onSelectionChange={(e: any) => {
-                          setValue("sub_category", e, {
+                          setValue("name", e, {
                             shouldValidate: true,
                           });
                         }}
@@ -183,7 +185,10 @@ const UpsertExpense = ({
                         isIconOnly
                         color="default"
                         onClick={() => {
-                          onOpenUpsertSubCat();
+                          // setValueName("category", getValues("category"), {
+                          //   shouldValidate: true,
+                          // });
+                          onOpenUpsertName();
                         }}
                       >
                         <PlusIcon className="w-5 h-5" />
@@ -194,7 +199,7 @@ const UpsertExpense = ({
                     )} */}
                   </div>
                   <div className="w-full ">
-                    <Input
+                    {/* <Input
                       variant="bordered"
                       type="text"
                       label="نام"
@@ -213,7 +218,7 @@ const UpsertExpense = ({
                           shouldValidate: true,
                         });
                       }}
-                    />
+                    /> */}
                     {/* {errors.name && (
                       <p className="text-red-500 pt-2 text-sm">{`${errors.name.message}`}</p>
                     )} */}
@@ -276,17 +281,16 @@ const UpsertExpense = ({
         setCategory={setCategory}
         setValue={setValueCat}
       />
-      <UpsertSubCategory
+      <UpsertName
         category={category}
-        errors={errorsSubCat}
-        getValues={getValuesSubCat}
-        handleSubmit={handleSubmitSubCat}
-        isOpenUpsert={isOpenUpsertSubCat}
-        onOpenChangeUpsert={onOpenChangeUpsertSubCat}
-        onSubmitForm={onSubmitFormSubCat}
-        selectedCategory={getValues("category")}
-        setSubCategoty={setSubCategory}
-        setValue={setValueSubCat}
+        errors={errorsName}
+        getValues={getValuesName}
+        handleSubmit={handleSubmitName}
+        isOpenUpsert={isOpenUpsertName}
+        onOpenChangeUpsert={onOpenChangeUpsertName}
+        onSubmitForm={onSubmitFormName}
+        setValue={setValueName}
+        setNames={setName}
       />
     </Modal>
   );

@@ -4,21 +4,19 @@ import {
   ICategoryData,
   IExpense,
   IExpenseData,
-  ISubCategory,
 } from "../interface/interface";
-import {
-  getCategory,
-  getCurrentDate,
-  getExpense,
-  getSubCategory,
-} from "../helper/controller";
+import { getCategory, getCurrentDate, getExpense } from "../helper/controller";
 import { useDisclosure } from "@nextui-org/react";
-import { useForm } from "react-hook-form";
+import { UseFormSetValue, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SUpsertCategory, SUpsertExpense } from "../interface/schema";
 import { APostCategory, APostExpense, APutExpense } from "../helper/api";
 
-export const useCategory = (setCategory: Function) => {
+export const useCategory = (
+  setCategory: Function,
+  category: ICategory[],
+  setExpense: UseFormSetValue<IExpenseData>
+) => {
   const {
     isOpen: isOpenUpsertCat,
     onOpen: onOpenUpsertCat,
@@ -48,6 +46,12 @@ export const useCategory = (setCategory: Function) => {
       getCategory(setCategory);
     }
   }, [isOpenUpsertCat]);
+
+  useEffect(() => {
+    if (category?.length > 0) {
+      setExpense("category", String(category[0]?.id), { shouldValidate: true });
+    }
+  }, [category]);
 
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

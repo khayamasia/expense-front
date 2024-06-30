@@ -35,18 +35,14 @@ export const APostCategory = async (body: any): Promise<TResponse<any>> => {
     body
   );
 };
-export const AGetSubCategories = async (
-  categoryId: string
-): Promise<TResponse<any>> => {
+export const AGetNames = async (): Promise<TResponse<any>> => {
   return FetchApi.get(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sub-category/getAll/${categoryId}`
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/name/getAll/`
   );
 };
-export const APostSubCategories = async (
-  body: any
-): Promise<TResponse<any>> => {
+export const APostNames = async (body: any): Promise<TResponse<any>> => {
   return FetchApi.post(
-    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/sub-categories`,
+    `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/names`,
     body
   );
 };

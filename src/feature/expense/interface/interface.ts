@@ -15,7 +15,7 @@ export interface IExpense {
   publishedAt: string;
   date: string;
   category: Category;
-  sub_category: SubCategory;
+  sub_category: Name;
 }
 
 export interface Category {
@@ -26,7 +26,7 @@ export interface Category {
   publishedAt: string;
 }
 
-export interface SubCategory {
+export interface Name {
   id: number;
   name: string;
   createdAt: string;
@@ -64,15 +64,13 @@ export interface ICategoryData {
 }
 
 //////////////--SUB CATEGORY--///////////////
-export interface ISubCategory {
+export interface IName {
   id: number;
   name: string;
-  category: Category;
 }
-export interface ISubCategoryData {
+export interface INameData {
   id: string;
   name: string;
-  category: string;
 }
 
 export interface IUpsertExpense {
@@ -85,8 +83,8 @@ export interface IUpsertExpense {
   handleSubmit: UseFormHandleSubmit<IExpenseData, undefined>;
   category: ICategory[];
   setCategory: Function;
-  setSubCategory: Function;
-  subCategory: ISubCategory[];
+  setName: Function;
+  names: IName[];
 }
 export interface IUpsertCategory {
   isOpenUpsert: boolean;
@@ -101,20 +99,18 @@ export interface IUpsertCategory {
 export interface IUpsertSubCategory {
   isOpenUpsert: boolean;
   onOpenChangeUpsert: (isOpen: boolean) => void;
-  errors: FieldErrors<ISubCategoryData>;
-  setValue: UseFormSetValue<ISubCategoryData>;
-  getValues: UseFormGetValues<ISubCategoryData>;
+  errors: FieldErrors<INameData>;
+  setValue: UseFormSetValue<INameData>;
+  getValues: UseFormGetValues<INameData>;
   onSubmitForm: (e: React.FormEvent<HTMLFormElement>) => void;
-  handleSubmit: UseFormHandleSubmit<ISubCategoryData, undefined>;
+  handleSubmit: UseFormHandleSubmit<INameData, undefined>;
   category: ICategory[];
-  setSubCategoty: Function;
-  selectedCategory: string;
+  setNames: Function;
 }
 export interface IExpenseData {
   id: string;
   price: string;
   category: string;
-  sub_category: string;
   name: string;
   comment: string;
   date: string;
