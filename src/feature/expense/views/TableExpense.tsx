@@ -68,7 +68,7 @@ const TableExpense = () => {
             >
               مبلغ
             </TableColumn>
-            <TableColumn key="category">دسته بندی</TableColumn>
+            <TableColumn key="category">نام</TableColumn>
             <TableColumn
               className="!rounded-r-none rounded-l-14 flex justify-end items-center"
               key="actions"
@@ -87,7 +87,7 @@ const TableExpense = () => {
                     <TableCell className="text-right">
                       {NumberSeparator(item?.price)}
                     </TableCell>
-                    <TableCell>{`${item?.category?.name}`}</TableCell>
+                    <TableCell>{`${item?.name?.name}`}</TableCell>
                     <TableCell>
                       <Dropdown
                         placement="bottom-start"
@@ -125,7 +125,7 @@ const TableExpense = () => {
                               setValue("name", String(item?.sub_category?.id), {
                                 shouldValidate: true,
                               });
-                              setValue("name", item?.name, {
+                              setValue("name", String(item?.name?.id), {
                                 shouldValidate: true,
                               });
                               setValue("comment", item?.comment, {

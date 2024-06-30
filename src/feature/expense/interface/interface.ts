@@ -7,7 +7,7 @@ import {
 
 export interface IExpense {
   id: number;
-  name: string;
+  name: Name;
   price: number;
   comment: string;
   createdAt: string;

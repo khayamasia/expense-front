@@ -64,7 +64,6 @@ export const useName = (
       APostNames(body)
         .then((res) => {
           setValue("name", "", { shouldValidate: true });
-          // setValue("id", "", { shouldValidate: true });
           onClose();
         })
         .catch((err) => {
