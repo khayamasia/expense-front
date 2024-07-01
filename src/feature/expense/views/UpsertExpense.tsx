@@ -26,6 +26,7 @@ import { useCategory } from "../hooks/useCategory";
 import UpsertSubCategory from "./UpsertName";
 import { useName } from "../hooks/useName";
 import UpsertName from "./UpsertName";
+import convertPersianToEnglish from "@/utils/ConvertPersianToEnglish";
 
 const UpsertExpense = ({
   isOpenUpsert,
@@ -102,6 +103,7 @@ const UpsertExpense = ({
                       label="قیمت"
                       className="w-full mt-2"
                       value={getValues("price")}
+                      color={`${errors.price ? "danger" : "default"}`}
                       classNames={{
                         input: "placeholder:text-asiatech-gray-500 ",
                         inputWrapper: [
@@ -110,9 +112,18 @@ const UpsertExpense = ({
                         ],
                       }}
                       onChange={(e: any) => {
-                        setValue("price", e.target.value, {
-                          shouldValidate: true,
-                        });
+                        // Validate and set the value if it's a number
+                        if (
+                          /^\d*$/.test(convertPersianToEnglish(e.target.value))
+                        ) {
+                          setValue(
+                            "price",
+                            convertPersianToEnglish(e.target.value),
+                            {
+                              shouldValidate: true,
+                            }
+                          );
+                        }
                       }}
                     />
                     {/* {errors.name && (
@@ -127,6 +138,7 @@ const UpsertExpense = ({
                         defaultItems={category}
                         placeholder=""
                         className="max-w-xs "
+                        color={`${errors.category ? "danger" : "default"}`}
                         selectedKey={getValues("category")}
                         onSelectionChange={(e: any) => {
                           setValue("category", e, {
@@ -145,6 +157,7 @@ const UpsertExpense = ({
                         color="default"
                         onClick={() => {
                           onOpenUpsertCat();
+                          setValueCat("name", "", { shouldValidate: true });
                         }}
                       >
                         <PlusIcon className="w-5 h-5" />
@@ -168,6 +181,7 @@ const UpsertExpense = ({
                         defaultItems={names}
                         placeholder=""
                         className="max-w-xs"
+                        color={`${errors.name ? "danger" : "default"}`}
                         selectedKey={getValues("name")}
                         onSelectionChange={(e: any) => {
                           setValue("name", e, {
@@ -189,6 +203,7 @@ const UpsertExpense = ({
                           //   shouldValidate: true,
                           // });
                           onOpenUpsertName();
+                          setValueName("name", "", { shouldValidate: true });
                         }}
                       >
                         <PlusIcon className="w-5 h-5" />

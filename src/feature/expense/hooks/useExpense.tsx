@@ -73,32 +73,14 @@ export const useExpense = () => {
 
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const expenseForm = new FormData();
+    // const expenseForm = new FormData();
     try {
-      expenseForm.append("name", getValues("name"));
-      expenseForm.append("price", getValues("price"));
-      expenseForm.append("comment", getValues("comment"));
-      expenseForm.append("category", getValues("category"));
-      expenseForm.append("users_permissions_user", "1");
+      // expenseForm.append("name", getValues("name"));
+      // expenseForm.append("price", getValues("price"));
+      // expenseForm.append("comment", getValues("comment"));
+      // expenseForm.append("category", getValues("category"));
+      // expenseForm.append("users_permissions_user", "1");
 
-      let data: any = getValues();
-      data["users_permissions_user"] = 1;
-      let body = {
-        data,
-      };
-
-      APostExpense(body)
-        .then((res) => {
-          getExpense(setExpenseList, 1, getValues("pageSize"), setValue);
-          setValue("id", "", { shouldValidate: true });
-          setValue("name", "", { shouldValidate: true });
-          setValue("comment", "", { shouldValidate: true });
-          setValue("price", "", { shouldValidate: true });
-          onClose();
-        })
-        .catch((err) => {
-          console.log("err:", err);
-        });
       if (getValues("id")) {
         let data: any = getValues();
         let putBody = {
@@ -106,9 +88,29 @@ export const useExpense = () => {
         };
         APutExpense(putBody, getValues("id"))
           .then((res) => {
+            getExpense(setExpenseList, 1, getValues("pageSize"), setValue);
             onClose();
           })
           .catch((err) => {});
+      } else {
+        let data: any = getValues();
+        data["users_permissions_user"] = 1;
+        let body = {
+          data,
+        };
+
+        APostExpense(body)
+          .then((res) => {
+            getExpense(setExpenseList, 1, getValues("pageSize"), setValue);
+            setValue("id", "", { shouldValidate: true });
+            setValue("name", "", { shouldValidate: true });
+            setValue("comment", "", { shouldValidate: true });
+            setValue("price", "", { shouldValidate: true });
+            onClose();
+          })
+          .catch((err) => {
+            console.log("err:", err);
+          });
       }
     } catch (err) {
       console.log(err);

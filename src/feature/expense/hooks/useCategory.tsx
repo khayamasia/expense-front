@@ -48,10 +48,8 @@ export const useCategory = (
   }, [isOpenUpsertCat]);
 
   useEffect(() => {
-    if (category?.length > 0) {
-      setExpense("category", String(category[0]?.id), { shouldValidate: true });
-    }
-  }, [category]);
+    setExpense("category", String(category[0]?.id), { shouldValidate: true });
+  }, [category.length]);
 
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

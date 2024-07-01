@@ -46,12 +46,10 @@ export const useName = (
   }, [isOpenUpsertName]);
 
   useEffect(() => {
-    if (names?.length > 0) {
-      setExpense("name", String(names[0]?.id), {
-        shouldValidate: true,
-      });
-    }
-  }, [names]);
+    setExpense("name", String(names[0]?.id), {
+      shouldValidate: true,
+    });
+  }, [names.length]);
 
   const onSubmitForm = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

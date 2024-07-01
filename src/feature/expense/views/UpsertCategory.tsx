@@ -26,6 +26,9 @@ const UpsertCategory = ({
         isOpen={isOpenUpsert}
         placement="center"
         onOpenChange={onOpenChangeUpsert}
+        onClose={() => {
+          setValue("name", "", { shouldValidate: true });
+        }}
       >
         <ModalContent>
           {(onClose) => (
@@ -50,6 +53,7 @@ const UpsertCategory = ({
                         placeholder=""
                         label="دسته بندی"
                         className="w-full mt-2"
+                        color={`${errors.name ? "danger" : "default"}`}
                         value={getValues("name")}
                         classNames={{
                           input: "placeholder:text-asiatech-gray-500 ",

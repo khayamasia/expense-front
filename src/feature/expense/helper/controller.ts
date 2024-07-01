@@ -66,6 +66,9 @@ export const getName = (setNames: Function) => {
       console.log("error:", err);
     });
 };
+// export const getNamesServer = async (setNames: Function) => {
+//   return await AGetNamesServerSide();
+// };
 
 export const convertNumberToWords = (number: number): string => {
   return `${num2persian(number)} تومان`;

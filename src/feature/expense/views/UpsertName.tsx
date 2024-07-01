@@ -55,6 +55,7 @@ const UpsertName = ({
                         label="نام"
                         className="w-full mt-2"
                         value={getValues("name")}
+                        color={`${errors.name ? "danger" : "default"}`}
                         classNames={{
                           input: "placeholder:text-asiatech-gray-500 ",
                           inputWrapper: [

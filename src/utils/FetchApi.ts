@@ -66,6 +66,21 @@ const setToken = (token: string) => {
   defaultOpTion.headers.authorization = "Bearer " + token;
 };
 
+const getServerSide = async (
+  link: string,
+  Option?: RequestInit | undefined
+): Promise<any> => {
+  const res = await fetch(link, { ...Option, ...defaultOpTion });
+  if (!res.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  return res.json();
+
+  // const res = await fetch(link, { ...Option, ...defaultOpTion });
+  // const result = await res.json()
+  //   return result
+};
+
 const FetchApi = {
   get,
   post,
@@ -73,5 +88,6 @@ const FetchApi = {
   put,
   delete: deleteMethod,
   setToken,
+  getServerSide,
 };
 export default FetchApi;
