@@ -31,21 +31,21 @@ for (startIndex; startIndex <= length; startIndex++) {
     }
   }
 }
-console.log("startIndex:", startIndex);
-console.log("length:", length);
-console.log("flag:", flag);
-console.log("nadide:", nadide);
-// let length = 8
-// let startIndex = 0
-// let i = 0
-// let nadide = 0
-// let flag = false
-// for (startIndex ; startIndex <= length; startIndex++) {
-//    console.log(startIndex)
-//    if (startIndex != 0) {
-//     nadide = (length - startIndex)
-//     length = nadide
-//     startIndex = 0
-//     flag = true
-//    }
+// let length = 8;
+// let startIndex = 5;
+// let i = 5;
+// let nadide = 0;
+// let flag = false;
+// for (startIndex; startIndex <= length; startIndex++) {
+
+//   console.log("startIndex:",startIndex)
+
+//   if (startIndex > 0) {
+//     if (startIndex === length - 1 && flag === false) {
+//       nadide = length - i;
+//       length = nadide;
+//       startIndex = 0;
+//       flag = true;
+//     }
+//   }
 // }
